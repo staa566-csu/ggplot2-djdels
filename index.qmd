@@ -1,0 +1,51 @@
+---
+title: "STAA 566 ggplot"
+author: "Delsie Johnson"
+format: html
+html:
+editor: visual
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo=TRUE, message=FALSE)
+```
+
+R Code
+
+```{r}
+library(tidyverse)
+library(ggthemes)
+
+# load WNBA regular season stats data
+WNBAStats <- read_csv("WNBAStats.csv")
+
+# create density plot
+p_3pt_den <- ggplot(WNBAStats, aes(Pp_3, col=TEAM)) +
+  geom_density() +
+  xlab("3 Point  Percentage") +
+  ylab("")+
+  labs(title="WNBA 3 Point Percentage for 2022 Season")
+# adding minimal theme
+p_3pt_den <- p_3pt_den + theme_minimal()
+# adding facet_wrap to separate out density by team
+p_3pt_den <- p_3pt_den + facet_wrap(~TEAM,nrow=3)
+# removing legend
+p_3pt_den <- p_3pt_den + theme(legend.position = "none")
+  
+```
+
+Save figure as pdf
+
+```{r save as pdf}
+pdf("WNBA3pt.pdf", heigh=6, width=8)
+print(p_3pt_den)
+dev.off()
+```
+
+Display figure in HTML
+
+```{r display}
+p_3pt_den
+```
+
+I got data from the WNBA online stats webpage (https://stats.wnba.com/teams/boxscores-traditional/?Season=2022&SeasonType=Regular%20Season)
